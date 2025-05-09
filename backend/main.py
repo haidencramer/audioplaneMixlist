@@ -20,9 +20,12 @@ if not MIXCLOUD_API_KEY:
 
 # Create FastAPI app
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
-# Set up Jinja2 templates in backend/templates (templates for rendering HTML responses)
+# Mount static directory with correct absolute path
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# Set up Jinja2 templates
 templates = Jinja2Templates(directory="backend/templates")
 
 # Create DB and tables if they don't exist
