@@ -1,0 +1,55 @@
+<!-- backend/templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Home - Audioplane Mixlist{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="header" style="text-align: center; margin-bottom: 20px;">
+            
+            <h1 class="title is-2 has-text-weight-bold has-text-primary" style="font-family: 'Arial', sans-serif;">Welcome to Audioplane Mixlist</h1>
+            <p class="subtitle is-4" style="font-family: 'Arial', sans-serif;">Your one-stop destination for curated playlists and mixes.</p>
+            <div class="logo-container" style="text-align: center; margin-bottom: 0px; background-color:rgb(164, 189, 215); padding: 10px; border-radius: 200px;">
+                <!-- Logo image with a specific size -->
+                <img src="{{ url_for('static', path='logo.png') }}" alt="Audioplane Logo" class="logo" style="width: 450px; height: 300px; border-radius: 50%;">
+            </div>
+
+        </div>
+        <div class="container" style="margin-bottom: 20px;">
+            <h1 class="title is-3 has-text-weight-bold has-text-dark" style="text-decoration: underline; font-family: 'Arial', sans-serif;">Playlists By The Community: </h1>
+        </div>
+            
+        <div class="container" style="background-color: rgb(111, 111, 111); text-align: center; margin-bottom: 20px; width: 70%; padding: 20px; border-radius: 10px;">
+            <p style="color: black; font-family: 'Arial', sans-serif; font-size: 1.1em;">Explore playlists created by our community members.</p>
+            <!-- Dynamically loaded playlists -->
+            <div id="playlist-container">
+                {% for playlist in playlists %}
+                    {% include 'playlists_partial.html' %}
+                {% endfor %}
+            </div>
+        </div>
+
+        
+        <!-- Playlist creation form (styled consistently) -->
+        <div class="create-playlist-form" style="text-align: center;">
+            <h2 class="title is-4 has-text-weight-bold" style="font-family: 'Arial', sans-serif;">Create a New Playlist</h2>
+            <form action="/create-playlist" method="POST">
+                <input type="text" name="name" placeholder="Enter Playlist Name" required class="input is-medium">
+                <button type="submit" class="button is-primary is-medium">Create Playlist</button>
+            </form>
+
+            <!-- Display error message if any -->
+            {% if error_message %}
+                <div class="error" style="color: red; font-size: 1.2em; margin-top: 10px;">{{ error_message }}</div>
+            {% endif %}
+        </div>
+
+        <br>
+
+        <!-- Load More Button for additional playlists -->
+        <div class="load-more-btn" hx-get="/load-more-playlists" hx-target="#playlist-container" style="text-align: center;">
+            <button class="button is-link is-medium">Load More Playlists</button>
+        </div>
+    </div>
+{% endblock %}
+
