@@ -20,23 +20,7 @@ if not MIXCLOUD_API_KEY:
 
 # Create FastAPI app
 app = FastAPI()
-
-
-origins = [
-    "https://audioplanemixlist.web.app/",  
-
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,  # List of allowed origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
-)
-
-# Mount static files (served from backend/static, this is where you serve static assets like CSS/JS)
-app.mount("/static", StaticFiles(directory="backend/static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Set up Jinja2 templates in backend/templates (templates for rendering HTML responses)
 templates = Jinja2Templates(directory="backend/templates")
