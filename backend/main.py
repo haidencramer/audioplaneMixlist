@@ -21,10 +21,10 @@ if not MIXCLOUD_API_KEY:
 # Create FastAPI app
 app = FastAPI()
 
-# CORS setup: allow frontend to access the backend
+
 origins = [
-    "https://audioplanemixlist.web.app/",  # Replace with your Firebase app URL
-    "https://your-firebase-app.firebaseapp.com",  # Another possible Firebase URL
+    "https://audioplanemixlist.web.app/",  
+
 ]
 
 app.add_middleware(
