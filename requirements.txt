@@ -5,3 +5,5 @@ jinja2
 sqlmodel
 firebase-admin
 google-cloud-functions
+python-dotenv
+python-multipart

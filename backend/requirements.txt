@@ -7,3 +7,4 @@ sqlmodel
 python-dotenv
 sqlalchemy
 
+python-multipart
