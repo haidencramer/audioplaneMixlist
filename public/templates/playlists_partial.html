@@ -1,0 +1,31 @@
+<div class="playlist" id="playlist-{{ playlist.id }}">
+    <!-- Playlist Title -->
+    <h2 style="font-size: 1.5rem; color: #f0f0f0; margin-bottom: 10px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+        {{ playlist.name }}
+    </h2>
+
+    <!-- Playlist Description -->
+    <p style="font-size: 1.1rem; color: #cfd8d1; word-wrap: break-word; line-height: 1.4; margin-bottom: 15px;">
+        {{ playlist.description }}
+    </p>
+
+    <!-- Buttons Row -->
+    <div style="margin-bottom: 20px;">
+        <button 
+            class="btn" 
+            hx-get="/mixes/{{ playlist.id }}" 
+            hx-target="#mix-container-{{ playlist.id }}"
+            style="padding: 12px 24px; font-size: 1.1rem; background-color: #1d442e; color: white; border-radius: 6px; margin-right: 12px; transition: background-color 0.3s ease; cursor: pointer;">
+            View This Playlist
+        </button>
+        <br>
+        <br>
+        <button 
+            onclick="confirmDelete('{{ playlist.id }}')"
+            style="padding: 12px 24px; font-size: 1.1rem; background-color: #8b1e1e; color: white; border-radius: 6px; transition: background-color 0.3s ease; cursor: pointer;">
+            Delete Playlist
+        </button>
+    </div>
+
+    <div id="mix-container-{{ playlist.id }}" style="margin-top: 20px;"></div>
+</div>

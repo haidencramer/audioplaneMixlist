@@ -1,0 +1,8 @@
+<h2 style="color: #ccffcc;">{{ playlist.name }}</h2>
+<ul>
+  {% for mix in playlist.mixes %}
+    <li style="margin-bottom: 10px;">
+      <a href="{{ mix.mixcloud_url }}" target="_blank" style="color: #aaffaa;">{{ mix.title }}</a>
+    </li>
+  {% endfor %}
+</ul>

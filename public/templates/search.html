@@ -1,0 +1,49 @@
+<!-- Updated search.html -->
+{% extends "base.html" %}
+
+{% block title %}Search - Audioplane Mixlist{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 style="color: #e0ffe0;">Search for Songs</h1>
+
+    <!-- Search form -->
+    <form hx-get="/search" hx-target="#song-results" hx-push-url="true">
+        <input type="text" name="q" value="{{ search_query }}" placeholder="Search for songs or mixes" class="search-input" required>
+        <button type="submit" class="btn">Search</button>
+    </form>
+
+    <!-- Display search results dynamically -->
+    <div id="song-results">
+        {% if search_results %}
+            <h2 style="color: #ccffcc;">Search Results</h2>
+            <div id="song-results-container">
+                {% for song in search_results %}
+                    <div class="song-card">
+                        <h3 style="color: #aaffaa;">{{ song.title }}</h3>
+                        {% if song.image_url %}
+                            <img src="{{ song.image_url }}" alt="Cover art for {{ song.title }}" style="width: 100%; max-width: 300px; border-radius: 12px; margin-bottom: 10px;">
+                        {% endif %}
+                        <a href="{{ song.mixcloud_url }}" target="_blank" class="btn">Listen on Mixcloud</a>
+
+                        <!-- Dropdown to select playlist -->
+                         <br><br>
+                        <form action="/add-to-playlist/{{ song.id }}" method="get">
+                            <select name="playlist_id" style="padding: 6px 12px; border-radius: 6px; margin-right: 8px;">
+                                {% for playlist in playlists %}
+                                    <option value="{{ playlist.id }}">{{ playlist.name }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                                 <!-- static add to playlist i couldnt get it fully working -->
+                            <button type="submit" class="btn">Add to Playlist</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #b0c8b0;">No results found. Try searching for something else!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

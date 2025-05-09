@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+gunicorn
+jinja2
+sqlmodel
+firebase-admin
+google-cloud-functions
