@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Form, Path
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from .models import Playlist, Mix
 from .database import create_db_and_tables, get_session
 from sqlmodel import select
@@ -20,16 +21,30 @@ if not MIXCLOUD_API_KEY:
 # Create FastAPI app
 app = FastAPI()
 
-# Mount static files (served from backend/static)
+# CORS setup: allow frontend to access the backend
+origins = [
+    "https://audioplanemixlist.web.app/",  # Replace with your Firebase app URL
+    "https://your-firebase-app.firebaseapp.com",  # Another possible Firebase URL
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # List of allowed origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+
+# Mount static files (served from backend/static, this is where you serve static assets like CSS/JS)
 app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
-# Set up Jinja2 templates in backend/templates
+# Set up Jinja2 templates in backend/templates (templates for rendering HTML responses)
 templates = Jinja2Templates(directory="backend/templates")
 
 # Create DB and tables if they don't exist
 create_db_and_tables()
 
-# Homepage - show playlists
+# Homepage - Display playlists
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     with get_session() as session:
@@ -57,7 +72,7 @@ def create_playlist(request: Request, name: str = Form(...)):
         session.commit()
         return RedirectResponse("/", status_code=302)
 
-# Search mixes
+# Search mixes in database
 @app.get("/search", response_class=HTMLResponse)
 def search(request: Request, q: str = ''):
     with get_session() as session:
@@ -91,7 +106,7 @@ def add_to_playlist(request: Request, mix_id: int = Path(...), playlist_id: int 
 
     return RedirectResponse("/", status_code=302)
 
-# Playlist popup details
+# Playlist popup details (to show all mixes in a playlist)
 @app.get("/playlist/{playlist_id}/popup", response_class=HTMLResponse)
 def playlist_popup(request: Request, playlist_id: int):
     with get_session() as session:
