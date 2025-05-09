@@ -108,3 +108,11 @@ def playlist_popup(request: Request, playlist_id: int):
         "playlist": playlist,
         "mixes": mixes
     })
+@app.get("/load-more-playlists", response_class=HTMLResponse)
+def load_more_playlists(request: Request):
+    with get_session() as session:
+        playlists = session.exec(select(Playlist).limit(5)).all()
+    return templates.TemplateResponse("playlists_partial.html", {
+        "request": request,
+        "playlists": playlists
+    })
